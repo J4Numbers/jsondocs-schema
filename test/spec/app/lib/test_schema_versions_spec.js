@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 M4Numbers <m4numbers@gmail.com>
+ * Copyright (c) 2019 $user.name
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +22,16 @@
  * SOFTWARE.
  */
 
-const Ajv = require('ajv');
-const SCHEMA = require('./schema_versions');
+const Module = require('../../../../lib/schema_versions');
 
-const generateValidator = () => {
-  if (ValidateSchema.schemaHandler === undefined) {
-    ValidateSchema.schemaHandler = new ValidateSchema();
-  }
-  return ValidateSchema.schemaHandler;
-};
-
-class ValidateSchema {
-  constructor() {
-    this.ajv = new Ajv();
-    Object.values(SCHEMA).forEach(schemaVersion => {
-      console.log(this.ajv.getSchema(schemaVersion));
-      if (this.ajv.getSchema(schemaVersion) === undefined) {
-        this.ajv.addSchema(require(`../schema/jsondocs.schema.${schemaVersion}.json`), schemaVersion);
-      }
+describe('./lib/schema_versions.js', () => {
+  describe('schema versions', () => {
+    it('should have the latest version map to the current stable release', () => {
+      expect(Module.LATEST).to.equal(Module['1_0_0']);
     });
-  }
 
-  getSchema(schemaVersion=SCHEMA.LATEST) {
-    return this.ajv.getSchema(schemaVersion);
-  }
-
-  validateSchema(jsonToValidate, schemaVersion=SCHEMA.LATEST) {
-    return this.ajv.validate(schemaVersion, jsonToValidate)
-      ? {
-        success: true
-      }
-      : {
-        success: false,
-        errors: this.ajv.errors
-      };
-  }
-}
-
-ValidateSchema.schemaHandler = undefined;
-
-module.exports = generateValidator;
+    it('should have each version mapped to dashed versions', () => {
+      expect(Module['1_0_0']).to.equal('1-0-0');
+    });
+  });
+});

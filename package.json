@@ -4,7 +4,11 @@
   "description": "A repo for managing and validating against jsondocs schemas",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "quality:coverage": "npm run test:mocha",
+    "quality:eslint": "eslint .",
+    "quality:lint": "eslint .",
+    "test": "npm run test:mocha",
+    "test:mocha": "nyc --all mocha"
   },
   "repository": {
     "type": "git",

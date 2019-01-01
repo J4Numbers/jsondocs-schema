@@ -22,43 +22,14 @@
  * SOFTWARE.
  */
 
-const Ajv = require('ajv');
-const SCHEMA = require('./schema_versions');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const sinonChai = require('sinon-chai');
 
-const generateValidator = () => {
-  if (ValidateSchema.schemaHandler === undefined) {
-    ValidateSchema.schemaHandler = new ValidateSchema();
-  }
-  return ValidateSchema.schemaHandler;
-};
+process.env.NODE_ENV = 'test';
 
-class ValidateSchema {
-  constructor() {
-    this.ajv = new Ajv();
-    Object.values(SCHEMA).forEach(schemaVersion => {
-      console.log(this.ajv.getSchema(schemaVersion));
-      if (this.ajv.getSchema(schemaVersion) === undefined) {
-        this.ajv.addSchema(require(`../schema/jsondocs.schema.${schemaVersion}.json`), schemaVersion);
-      }
-    });
-  }
+chai.use(chaiAsPromised);
+chai.use(sinonChai);
 
-  getSchema(schemaVersion=SCHEMA.LATEST) {
-    return this.ajv.getSchema(schemaVersion);
-  }
-
-  validateSchema(jsonToValidate, schemaVersion=SCHEMA.LATEST) {
-    return this.ajv.validate(schemaVersion, jsonToValidate)
-      ? {
-        success: true
-      }
-      : {
-        success: false,
-        errors: this.ajv.errors
-      };
-  }
-}
-
-ValidateSchema.schemaHandler = undefined;
-
-module.exports = generateValidator;
+global.sinon = require('sinon');
+global.expect = chai.expect;
