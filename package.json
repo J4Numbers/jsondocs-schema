@@ -20,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/m4numbers/jsondocs-schema/issues"
   },
-  "homepage": "https://github.com/m4numbers/jsondocs-schema#readme"
+  "homepage": "https://github.com/m4numbers/jsondocs-schema#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.11.1",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "sinon": "^7.2.2",
+    "sinon-chai": "^3.3.0"
+  },
+  "dependencies": {
+    "ajv": "^6.6.2"
+  }
 }
